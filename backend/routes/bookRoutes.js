@@ -1,10 +1,11 @@
 import express from "express";
 import { Book } from "../models/bookModel.js";
 import mongoose from "mongoose";
+import isAuthenticated from "../middleware/isAuthenticated.js";
 const router = express.Router();
 
 // Route to post a new book
-router.post("/", async (req, res) => {
+router.post("/", isAuthenticated, async (req, res) => {
   try {
     const { title, author, publishYear } = req.body;
     if (!title || !author || !publishYear) {
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
 });
 
 // Route to get all books
-router.get("/", async (req, res) => {
+router.get("/", isAuthenticated, async (req, res) => {
   try {
     const books = await Book.find({});
     return res.status(200).json({ count: books.length, data: books });
@@ -35,7 +36,7 @@ router.get("/", async (req, res) => {
 });
 
 //route to get a book by id
-router.get("/:id", async (req, res) => {
+router.get("/:id", isAuthenticated, async (req, res) => {
   try {
     const id = req.params.id;
     const book = await Book.findById(id);
@@ -54,7 +55,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //route to update a book by id
-router.put("/:id", async (req, res) => {
+router.put("/:id", isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
     const { title, author, publishYear } = req.body;
@@ -77,7 +78,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //route to delete a book by id
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
     const book = await Book.findByIdAndDelete(id);
