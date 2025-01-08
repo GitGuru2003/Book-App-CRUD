@@ -11,19 +11,19 @@ const CreateBook = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newBook = { title, author, publishYear };
     setLoading(true);
-    axios
-      .post("http://localhost:8000/books/", newBook)
-      .then((res) => {
-        setLoading(false);
-        navigate("/");
-      })
-      .catch((error) => {
-        setLoading(false);
-        alert(error.response.data.message);
+    try {
+      await axios.post("http://localhost:8000/books/", newBook, {
+        withCredentials: true,
       });
+      setLoading(false);
+      navigate("/");
+    } catch (error) {
+      setLoading(false);
+      alert(error.response.data.message);
+    }
   };
   return (
     <div className="p-4">

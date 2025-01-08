@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 const isAuthenticated = (req, res, next) => {
   try {

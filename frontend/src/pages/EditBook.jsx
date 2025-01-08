@@ -13,34 +13,34 @@ const EditBook = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`http://localhost:8000/books/${id}`)
-      .then((res) => {
-        setTitle(res.data.data.title);
-        setAuthor(res.data.data.author);
-        setPublishYear(res.data.data.publishYear);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
+    try {
+      setLoading(true);
+      const res = axios.get(`http://localhost:8000/books/${id}`, {
+        withCredentials: true,
       });
+      setTitle(res.data.data.title);
+      setAuthor(res.data.data.author);
+      setPublishYear(res.data.data.publishYear);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   }, []);
 
   const handleSubmit = () => {
     const newBook = { title, author, publishYear };
     setLoading(true);
-    axios
-      .put(`http://localhost:8000/books/${id}`, newBook)
-      .then((res) => {
-        setLoading(false);
-        navigate("/");
-      })
-      .catch((error) => {
-        setLoading(false);
-        alert(error.response.data.message);
+    try {
+      axios.put(`http://localhost:8000/books/${id}`, newBook, {
+        withCredentials: true,
       });
+      setLoading(false);
+      navigate("/");
+    } catch (error) {
+      setLoading(false);
+      alert(error.response.data.message);
+    }
   };
   return (
     <div className="p-4">

@@ -10,16 +10,18 @@ const DeleteBook = () => {
   const navigate = useNavigate();
   const handleDelete = () => {
     setLoading(true);
-    axios
-      .delete(`http://localhost:8000/books/${id}`)
-      .then((res) => {
-        setLoading(false);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
+    try {
+      const res = axios.delete(`http://localhost:8000/books/${id}`, {
+        withCredentials: true,
       });
+      navigate("/");
+      if (res.status === 200) {
+        alert("Book deleted successfully");
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
   return (
     <div className="p-4">

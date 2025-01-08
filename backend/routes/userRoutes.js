@@ -31,6 +31,7 @@ router.post("/register", async (req, res) => {
     .status(201)
     .json({ success: true, message: "User registered successfully" });
 });
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -59,7 +60,7 @@ router.post("/login", async (req, res) => {
         .status(200)
         .cookie("token", token, {
           httpOnly: true,
-          secure: true,
+          secure: false,
           sameSite: "strict",
           maxAge: 24 * 60 * 60 * 1000,
         })
@@ -81,6 +82,7 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
 router.get("/logout", async (req, res) => {
   return res
     .status(200)

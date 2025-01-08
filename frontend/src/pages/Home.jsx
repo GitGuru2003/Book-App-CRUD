@@ -11,17 +11,21 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get("http://localhost:8000/books")
-      .then((res) => {
+    const fetchBooks = async () => {
+      try {
+        setLoading(true);
+
+        const res = await axios.get("http://localhost:8000/books", {
+          withCredentials: true,
+        });
         setBooks(res.data.data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log(error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    fetchBooks();
   }, []);
   return (
     <div className="p-4">
